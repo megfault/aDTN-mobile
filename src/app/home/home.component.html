@@ -1,14 +1,14 @@
 <ActionBar class="action-bar">
     <!-- 
-    Use the NavigationButton as a side-drawer button in Android
-    because ActionItems are shown on the right side of the ActionBar
-    -->
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
     <!-- 
-    Use the ActionItem for IOS with position set to left. Using the
-    NavigationButton as a side-drawer button in iOS is not possible,
-    because its function is to always navigate back in the application.
-    -->
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
         ios.position="left">
     </ActionItem>
@@ -16,6 +16,31 @@
 </ActionBar>
 
 <GridLayout class="page page-content">
-    <Label class="page-icon fa" text="&#xf015;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+    <ScrollView row="1">
+        <StackLayout class="p-20">
+            <Card:CardView class="cardStyle" margin="2" elevation="10" *ngFor="let message of messages">
+                <GridLayout rows="10,30,30, auto, auto,10" columns="10,40, *, 30,10" *ngIf="message.type === 'image'">
+                    <image *ngIf="message.sender" src="res://profile" stretch="aspectFit" verticalAlignment="stretch"
+                        col="1" row="1" rowSpan="2">
+                    </image>
+                    <label *ngIf="message.sender" class="createdBy text-left" horizontalAlignment="left"
+                        [text]="message.sender" row="1" col="2" textWrap="true"></label>
+                    <label class="createdOn text-left" horizontalAlignment="left"
+                        [text]="message.dateArrived | date:'yyyy.MM.dd hh:mm'" row="2" col="2"></label>
+                    <image *ngIf="message.type === 'image'" [src]="message.content" stretch="aspectFit" colSpan="3"
+                        col="1" row="3"></image>
+                    <label horizontalAlignment="left" [text]="message.content" colSpan="3" row="4" textWrap="true"
+                        col="1"></label>
+                    <label horizontalAlignment="left" [text]="message.content" textWrap="true" col="1" row="5"
+                        colSpan="3"></label>
+                </GridLayout>
+                <GridLayout rows="20, auto" columns="*, 75" *ngIf="message.type === 'text'">
+                    <label class="createdOn text-left" horizontalAlignment="left"
+                        [text]="message.dateArrived | date:'yyyy.MM.dd'" row="0" col="1"></label>
+                    <label class="message-content" horizontalAlignment="left" [text]="message.content" row="1"
+                        textWrap="true" colspan="2" col="0"></label>
+                </GridLayout>
+            </Card:CardView>
+        </StackLayout>
+    </ScrollView>
 </GridLayout>
